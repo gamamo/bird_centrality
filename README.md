@@ -11,4 +11,7 @@ There are two scripts in these repository that should be run in the specific ord
 The data necessary to run the scripts is included in the repository as well. Please note that the running the codes in the *script_enm_2024_01_10* may be computationally intensive and take several hours.
 
 ### Data description
+spp_cen_envi2.RData - Data used in Moulatlet et al. 2023 (JAnimalEcology). File necessary to run the ENM.
+
+sp_dists_covmat_v3_resu_euclidian.Rdata - Results of the ENM, used to make analysis, Figures and tables for the manuscript (Most useful for the reviewers to use with the code script_mrm_mixed_2024_05_20)
 
