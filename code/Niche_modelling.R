@@ -153,10 +153,9 @@ for (z in unique(spocc$species)) { #start loop
 # PART 3: load raster climatic layers ---------------------------------------------
 
 # this code below may take a while to download. Load the layers using the  next line of code
-climate <- geodata::worldclim_global("bio",res=0.5,path=here("data")) 
+# select the variables BIO 1, BIO 5, BIO 6, BIO 12, BIO 17 and BIO 16
 
-# download some example climatic layers
-climate <- rast(here("data","climate_layers.tif"))
+climate <- geodata::worldclim_global("bio",res=0.5,path=here("data")) 
 
 # PART 4: run the ENM models ------------------------------------------------------
 
