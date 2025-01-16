@@ -1,17 +1,29 @@
-# Bird centrality
+Citation: Moulatlet, G., Dattilo, W., Kissling, D., Villalobos, F. Bird species’ network centrality varies differentially across species within their climatic niches. 2025. The American Naturalist. in review.
 
-## This is the repository for the article "Bird species’ centrality in seed-dispersal networks varies within climatic niches" by Moulatlet et al.
+Contact: Gabriel M. Moulatlet (mandaprogabriel@gmail.com) and Fabricio Villalobos (fabricio.villalobos@gmail.com)
 
-There are two scripts in these repository that should be run in the specific order:
+Short summary of the article:Understanding how the functional role of species within seed-dispersal networks varies across geographical and climatic gradients can reveal the mechanisms driving network organization. Using data for bird species from all continents, we evaluated the variation of species’ centrality within local networks across species’ climatic niches (occupied climatic conditions) and in response to proxies of competition (number of co-existing bird species) and resource availability (number of co-existing plant species). Taken together, the variation in individual species’ centrality within climatic niches suggests the existence of areas where species achieve high centrality, which might form the substrate for evolutionary and ecological dynamics.
 
-1) *script_enm_2024_01_10* Contains the steps for running the envelop niche models for each focal species of birds. It starts by downloading occurrences from a pre-select species list. Then, ENM are run. At the end, it calculates the Euclidian distance from each network where the species occur to the centroid of the niche.
+Responsible for collecting data and writing code: Gabriel M. Moulatlet (mandaprogabriel@gmail.com)
 
-2) *script_mrm_mixed_2024_05_20* Contains the steps to run the mixed models for each focal species. It also has the codes to make all the figures in the manuscript.
+Folders and files: There are three folders, data (which contain the data necessary to run the R codes), code (which contain the R scripts) and outputs (where the figures and tables generated when running the scripts will be saved).
 
-The data necessary to run the scripts is included in the repository as well. Please note that the running the codes in the *script_enm_2024_01_10* may be computationally intensive and take several hours.
+Data folder: 
+	     - "species_list.csv": contains the column "Scientific" which has species names
+             - "gbif_occ.csv": contains three columns. "species" is a list of species names. "latitude" and "longitude" are geographic coordinates in decimal degrees.
+             - Folder "convex_areas": contains shapefiles (extension .shp) and auxiliary files (.dbf, .prj, . cpg, .shx). Each file name refers to one species.
+	     - "climate_layers.tif": contains 6 climate layers downloaded from worldclim.org. For layer names, please check https://www.worldclim.org/data/worldclim21.html
+	     - "network_data.csv": contains four columns. "Scientific" is the list of species names. "PC1" has the centrality values of each species in one ecological network. "latitude" and "longitude" are geographic coordinates in decimal degrees of different ecological networks where a given species occur. For further information please see Moulatlet et al. 2023. Journal of Animal Ecology.
+	     - "distance_data.csv": contains seven columns. "scientific" is a list of species names. "family" is the species taxonomic family. "PC1" has the centrality values of each species in one ecological network. "nbirds" is the bird richness in each network the species participate in. "nplants" is the plant richness in each network the species participate in. "envidist" is the Euclidian distance of each network climatic location to the centroid of species climatic niche. "database" has information on the source of each network the species participate in.
 
-### Data description
-spp_cen_envi2.RData - Data used in Moulatlet et al. 2023 (JAnimalEcology). File necessary to run the ENM.
+Code folder:
+	     - Niche_modelling.R: script with 5 parts necessary to run the niche model for each species and to calculate the variable "envidist", the main variable use in the script "Statistical Analyses".
+	     - Statistical_Analyses.R: script that generates results, figures and tables.
 
-sp_dists_covmat_v3_resu_euclidian.Rdata - Results of the ENM, used to make analysis, Figures and tables for the manuscript (Most useful for the reviewers to use with the code script_mrm_mixed_2024_05_20)
+Output folder: empty. it will be filled as the code is run.
 
+Software version: R version 4.4.2 (2024-10-31 ucrt)
+Platform: x86_64-w64-mingw32/x64
+Running under: Windows 11 x64 (build 26100)
+
+Funding sources: Ciencia Básica project SEP-CONACYT CB-2017-2018 (#A1-S-34563, grant to Fabricio Villalobos). Gabriel M. Moulatet received a postdoctoral grant from this project.
