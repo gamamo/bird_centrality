@@ -17,7 +17,8 @@ library(DHARMa)          # CRAN v0.4.6
 library(marginaleffects) # CRAN v0.20.1
 library(patchwork)       # CRAN v1.2.0 
 library(sjPlot)          # CRAN v2.8.16
-library(janitor)         # CRAN v2.2.0    
+library(janitor)         # CRAN v2.2.0 
+library(MuMIn)           # CRAN v1.48.4
 
 # Load data ---------------------------------------------------------------
 
