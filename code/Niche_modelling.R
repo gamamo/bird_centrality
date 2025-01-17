@@ -37,7 +37,7 @@ splist <- read_csv(here("data","species_list.csv"))
 
 if(FALSE){
 
-spocc <-  list() # create an empity list
+spocc <-  list() # create an empty list
 
 for(i in unique(splist$Scientific)){ # loop start
   print(i)
@@ -112,12 +112,13 @@ for (i in 1:length(sppoly_list)) {
   print(names(sppoly[[i]]))
 }
 
-# ithe loop below calculate and save the convex area around the gbif occ points
-# in the need to run the loop below, activate the code by replacing FALSE by TRUE when necessary
+# the code below calculates and saves the convex area around the gbif occ points
+# control the execution by replacing FALSE by TRUE when necessary
 
 if(FALSE){
 # load the occurrence data for each selected species
-spocc <- read_csv(here("data","gbif_occ.csv"))
+spocc <- read_csv(here("data","gbif_occ.csv")) |>  
+  dplyr::add_count(species) |> filter(n>3) |> select(-n)
 
 sppoly = list() # create an empty list
 
@@ -131,7 +132,7 @@ for (z in unique(spocc$species)) { #start loop
   # original results of this manuscript. But the function is not
   # available in the package update. the convex_area function calculates the convex hull and make a buffer
   # around the convex hull polygon. We provide similar functions below but they do not reproduce our
-  # results precisely. We caution about use them for reproducibility.
+  # results exactly. We caution about using them for reproducibility.
   
   if(FALSE){
   sppoly[[z]] <-  convex_area(data = temp, longitude = "longitude",
@@ -152,10 +153,14 @@ for (z in unique(spocc$species)) { #start loop
 
 # PART 3: load raster climatic layers ---------------------------------------------
 
-# this code below may take a while to download. Load the layers using the  next line of code
-# select the variables BIO 1, BIO 5, BIO 6, BIO 12, BIO 17 and BIO 16
-
+# this code below may take a while to download. Downlooad the layers using the next line of code
 climate <- geodata::worldclim_global("bio",res=0.5,path=here("data")) 
+# select the variables BIO 1, BIO 5, BIO 6, BIO 12, BIO 17 and BIO 16
+climate <- climate[[names(climate)[match(c("wc2.1_30s_bio_1","wc2.1_30s_bio_5","wc2.1_30s_bio_6","wc2.1_30s_bio_12","wc2.1_30s_bio_17","wc2.1_30s_bio_16"),names(climate))]]]
+climate <- terra::scale(climate)
+
+# alternatively, load the layers from disk if the files are available locally
+#climate <- rast(dir_ls('data/climate/wc2.1_30s/'))
 
 # PART 4: run the ENM models ------------------------------------------------------
 
@@ -168,7 +173,6 @@ climate <- geodata::worldclim_global("bio",res=0.5,path=here("data"))
 if (FALSE){
   
 # to run the model we first crop the climatic layers around the convex area
-
 # load species names
 
 spocc <- read_csv(here("data","gbif_occ.csv")) 
@@ -186,9 +190,9 @@ for (i in 1:length(sppoly_list)) {
   print(names(sppoly[[i]]))
 }
 
-#Firs crop the rasters using species polygons
+# Crop the rasters using species polygons
 
-r_list=list() # create a empty list of cropped rasters
+r_list=list() # create an empty list of cropped rasters
 
 for (i in 1:length(sppoly)){
   print(i)
@@ -204,7 +208,6 @@ cents = list() # create an empty list to save the ellipse centroids
 
 
 for (k in unique(spocc$species)){
-
 obs <- spocc |> dplyr::filter(species==k)
 
 ell_model <- ellipsoid_model(data = obs, species = "species",
@@ -219,12 +222,11 @@ ell_model <- ellipsoid_model(data = obs, species = "species",
                              overwrite = TRUE, 
                              output_directory = here("products",k))
 
-cents[[i]] = as.vector(ell_model@centroid) # this list is used in PART 5
-names(cents)[[i]] <- k
+cents[[k]] = as.vector(ell_model@centroid) # this list is used in PART 5
 }
 
 
-# PART 5: calculate euclidian distances from the centroids ----------------------------------
+# PART 5: calculate euclidean distances from the centroids ----------------------------------
 # the output of this part used in the article is in the file: "distance_data.csv" located 
 # inside the data folder. Use that for running the next parts of the script.
 
@@ -235,7 +237,7 @@ eni <- read_csv(here("data","network_data.csv"))
 spdist <- list() # create an empty list to save the objects
 for(i in 1:length(cents)){
   
-  # turn data into a matrix. This is the format necessary to calculate the euclidian distances below
+  # turn data into a matrix. This is the format necessary to calculate the Euclidean distances below
   
   temp <-  unlist(cents)
   names(temp) <- NULL
@@ -258,7 +260,7 @@ for(i in 1:length(cents)){
     # extract network climatic values
     toextv2 <- terra::extract(climate,toextv)
     
-    # calculate Euclidian distance of each network climatic position to the centroid of each 
+    # calculate Euclidean distance of each network climatic position to the centroid of each 
     # species climatic model
     
     toextv2 = toextv2[,-1] # delete the column "ID"
@@ -279,9 +281,9 @@ for(i in 1:length(cents)){
 }
 
 # convert the results to a data.frame and save it as .csv file
-
+# values in this file will differ slightly with those in the 'distance_data' file"
 spdist_df <-  map_df(spdist,~.x) |> 
-  write_csv(here("products","euclidian_distances.csv"))
+  write_csv(here("products","euclidean_distances.csv"))
 }
 
 
