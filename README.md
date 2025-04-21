@@ -1,5 +1,5 @@
 ### Citation: 
-Moulatlet, G., Dattilo, W., Kissling, D., Villalobos, F. Bird species’ network centrality varies differentially across species within their climatic niches. 2025. The American Naturalist. in review.
+Moulatlet, G., Dattilo, W., Kissling, D., Villalobos, F. Bird species’ network centrality varies differentially across species within their climatic niches. 2025. The American Naturalist. Accepted.
 
 ### Contact: 
 Gabriel M. Moulatlet (mandaprogabriel@gmail.com) and Fabricio Villalobos (fabricio.villalobos@gmail.com)
